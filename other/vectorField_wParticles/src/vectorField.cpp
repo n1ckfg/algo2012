@@ -1,20 +1,14 @@
 #include "vectorField.h"
 
-
-
 //------------------------------------------------------------------------------------
-vectorField::vectorField(){
-	
-	
-	
+vectorField::vectorField() {
 	/*fieldWidth  = 60;
     fieldHeight = 40;
 	 */
 }
 
 //------------------------------------------------------------------------------------
-void vectorField::setupField(int innerW, int innerH, int outerW, int outerH){
-	
+void vectorField::setupField(int innerW, int innerH, int outerW, int outerH) {
 	fieldWidth			= innerW;
 	fieldHeight			= innerH;
 	externalWidth		= outerW;
@@ -23,7 +17,7 @@ void vectorField::setupField(int innerW, int innerH, int outerW, int outerH){
 	field.clear();
 	
 	fieldSize = fieldWidth * fieldHeight;
-	for (int i = 0; i < fieldSize; i++){
+	for (int i = 0; i < fieldSize; i++) {
 		ofVec2f pt;  
 		pt.set(0,0);
 		field.push_back(pt);
@@ -32,23 +26,23 @@ void vectorField::setupField(int innerW, int innerH, int outerW, int outerH){
 
 
 //------------------------------------------------------------------------------------
-void vectorField::clear(){
-    for (int i = 0; i < fieldSize; i++){
+void vectorField::clear() {
+    for (int i = 0; i < fieldSize; i++) {
         field[i].set(0,0);
     }
 }
 
 
 //------------------------------------------------------------------------------------
-void vectorField::fadeField(float fadeAmount){
-	for (int i = 0; i < fieldSize; i++){
+void vectorField::fadeField(float fadeAmount) {
+	for (int i = 0; i < fieldSize; i++) {
         field[i].set(field[i].x*fadeAmount,field[i].y*fadeAmount);
     }
 }
 
 //------------------------------------------------------------------------------------
-void vectorField::randomizeField(float scale){
-	for (int i = 0; i < fieldSize; i++){
+void vectorField::randomizeField(float scale) {
+	for (int i = 0; i < fieldSize; i++) {
         // random between -1 and 1
         float x = (float)(ofRandom(-1,1)) * scale;
         float y = (float)(ofRandom(-1,1)) * scale;
@@ -57,13 +51,12 @@ void vectorField::randomizeField(float scale){
 }
 
 //------------------------------------------------------------------------------------
-void vectorField::draw(){
-	
+void vectorField::draw() {	
     float scalex = (float)externalWidth / (float)fieldWidth;
     float scaley = (float)externalHeight / (float)fieldHeight;
 	
-    for (int i = 0; i < fieldWidth; i++){
-        for (int j = 0; j < fieldHeight; j++){
+    for (int i = 0; i < fieldWidth; i++) {
+        for (int j = 0; j < fieldHeight; j++) {
 
             // pos in array
             int pos = j * fieldWidth + i;
@@ -94,8 +87,7 @@ void vectorField::draw(){
 
 
 //------------------------------------------------------------------------------------
-ofVec2f vectorField::getForceFromPos(float xpos, float ypos){
-	
+ofVec2f vectorField::getForceFromPos(float xpos, float ypos) {	
 	ofVec2f frc;
 	frc.set(0,0);
 	
@@ -104,7 +96,7 @@ ofVec2f vectorField::getForceFromPos(float xpos, float ypos){
 	float yPct = ypos / (float)externalHeight;
 	
 	// if we are less then 0 or greater then 1 in x or y, return no force.
-	if ((xPct < 0 || xPct > 1) || (yPct < 0 || yPct > 1)){
+	if ((xPct < 0 || xPct > 1) || (yPct < 0 || yPct > 1)) {
 		return frc;	
 	} 
 	
@@ -124,8 +116,7 @@ ofVec2f vectorField::getForceFromPos(float xpos, float ypos){
 }
 
 //------------------------------------------------------------------------------------
-void vectorField::addInwardCircle(float x, float y, float radius, float strength){
-	
+void vectorField::addInwardCircle(float x, float y, float radius, float strength) {	
     // x y and radius are in external dimensions.  Let's put them into internal dimensions:
 	// first convert to pct:
 	
@@ -139,8 +130,8 @@ void vectorField::addInwardCircle(float x, float y, float radius, float strength
 	float fieldRadius	= (float)(radiusPct * fieldWidth);
 	
 	// we used to do this search through every pixel, ie: 
-	//    for (int i = 0; i < fieldWidth; i++){
-	//    for (int j = 0; j < fieldHeight; j++){
+	//    for (int i = 0; i < fieldWidth; i++) {
+	//    for (int j = 0; j < fieldHeight; j++) {
 	// but we can be smarter :)
 	// now, as we search, we can reduce the "pixels" we look at by 
 	// using the x y +/- radius.
@@ -150,10 +141,9 @@ void vectorField::addInwardCircle(float x, float y, float radius, float strength
 	int starty	= MAX(fieldPosY - fieldRadius, 0);
 	int endx	= MIN(fieldPosX + fieldRadius, fieldWidth);
 	int endy	= MIN(fieldPosY + fieldRadius, fieldHeight);
-	
-	
-    for (int i = startx; i < endx; i++){
-        for (int j = starty; j < endy; j++){
+		
+    for (int i = startx; i < endx; i++) {
+        for (int j = starty; j < endy; j++) {
 			
             int pos = j * fieldWidth + i;
             float distance = (float)sqrt((fieldPosX-i)*(fieldPosX-i) +
@@ -161,7 +151,7 @@ void vectorField::addInwardCircle(float x, float y, float radius, float strength
             
 			if (distance < 0.0001) distance = 0.0001;  // since we divide by distance, do some checking here, devide by 0 is BADDDD
 			
-			if (distance < fieldRadius){
+			if (distance < fieldRadius) {
 				
 				float pct = 1.0f - (distance / fieldRadius);
 				
@@ -175,11 +165,8 @@ void vectorField::addInwardCircle(float x, float y, float radius, float strength
     }
 }
 
-
 //------------------------------------------------------------------------------------
-void vectorField::addOutwardCircle(float x, float y, float radius, float strength){
-	
-	
+void vectorField::addOutwardCircle(float x, float y, float radius, float strength) {	
 	// x y and radius are in external dimensions.  Let's put them into internal dimensions:
 	// first convert to pct:
 	
@@ -193,8 +180,8 @@ void vectorField::addOutwardCircle(float x, float y, float radius, float strengt
 	float fieldRadius	= (float)(radiusPct * fieldWidth);
 	
 	// we used to do this search through every pixel, ie: 
-	//    for (int i = 0; i < fieldWidth; i++){
-	//    for (int j = 0; j < fieldHeight; j++){
+	//    for (int i = 0; i < fieldWidth; i++) {
+	//    for (int j = 0; j < fieldHeight; j++) {
 	// but we can be smarter :)
 	// now, as we search, we can reduce the "pixels" we look at by 
 	// using the x y +/- radius.
@@ -205,17 +192,15 @@ void vectorField::addOutwardCircle(float x, float y, float radius, float strengt
 	int endx	= MIN(fieldPosX + fieldRadius, fieldWidth);
 	int endy	= MIN(fieldPosY + fieldRadius, fieldHeight);
 
-	
-    for (int i = startx; i < endx; i++){
-        for (int j = starty; j < endy; j++){
+    for (int i = startx; i < endx; i++) {
+        for (int j = starty; j < endy; j++) {
 
             int pos = j * fieldWidth + i;
-            float distance = (float)sqrt((fieldPosX-i)*(fieldPosX-i) +
-                                         (fieldPosY-j)*(fieldPosY-j));
+            float distance = (float)sqrt((fieldPosX-i)*(fieldPosX-i) + (fieldPosY-j)*(fieldPosY-j));
             
 			if (distance < 0.0001) distance = 0.0001;  // since we divide by distance, do some checking here, devide by 0 is BADDDD
 			
-			if (distance < fieldRadius){
+			if (distance < fieldRadius) {
                
 				float pct = 1.0f - (distance / fieldRadius);
                 float strongness = strength * pct;
@@ -229,10 +214,7 @@ void vectorField::addOutwardCircle(float x, float y, float radius, float strengt
 }
 
 //------------------------------------------------------------------------------------
-void vectorField::addClockwiseCircle(float x, float y, float radius, float strength){
-	
-	
-	
+void vectorField::addClockwiseCircle(float x, float y, float radius, float strength) {
     // x y and radius are in external dimensions.  Let's put them into internal dimensions:
 	// first convert to pct:
 	
@@ -246,8 +228,8 @@ void vectorField::addClockwiseCircle(float x, float y, float radius, float stren
 	float fieldRadius	= (float)(radiusPct * fieldWidth);
 	
 	// we used to do this search through every pixel, ie: 
-	//    for (int i = 0; i < fieldWidth; i++){
-	//    for (int j = 0; j < fieldHeight; j++){
+	//    for (int i = 0; i < fieldWidth; i++) {
+	//    for (int j = 0; j < fieldHeight; j++) {
 	// but we can be smarter :)
 	// now, as we search, we can reduce the "pixels" we look at by 
 	// using the x y +/- radius.
@@ -258,9 +240,8 @@ void vectorField::addClockwiseCircle(float x, float y, float radius, float stren
 	int endx	= MIN(fieldPosX + fieldRadius, fieldWidth);
 	int endy	= MIN(fieldPosY + fieldRadius, fieldHeight);
 	
-	
-    for (int i = startx; i < endx; i++){
-        for (int j = starty; j < endy; j++){
+    for (int i = startx; i < endx; i++) {
+        for (int j = starty; j < endy; j++) {
 			
             int pos = j * fieldWidth + i;
             float distance = (float)sqrt((fieldPosX-i)*(fieldPosX-i) +
@@ -268,7 +249,7 @@ void vectorField::addClockwiseCircle(float x, float y, float radius, float stren
             
 			if (distance < 0.0001) distance = 0.0001;  // since we divide by distance, do some checking here, devide by 0 is BADDDD
 			
-			if (distance < fieldRadius){
+			if (distance < fieldRadius) {
 				
 				float pct = 1.0f - (distance / fieldRadius);
 				
@@ -282,13 +263,8 @@ void vectorField::addClockwiseCircle(float x, float y, float radius, float stren
     }
 }
 
-
-
 //------------------------------------------------------------------------------------
-void vectorField::addCounterClockwiseCircle(float x, float y, float radius, float strength){
-	
-	
-	
+void vectorField::addCounterClockwiseCircle(float x, float y, float radius, float strength) {
     // x y and radius are in external dimensions.  Let's put them into internal dimensions:
 	// first convert to pct:
 	
@@ -302,8 +278,8 @@ void vectorField::addCounterClockwiseCircle(float x, float y, float radius, floa
 	float fieldRadius	= (float)(radiusPct * fieldWidth);
 	
 	// we used to do this search through every pixel, ie: 
-	//    for (int i = 0; i < fieldWidth; i++){
-	//    for (int j = 0; j < fieldHeight; j++){
+	//    for (int i = 0; i < fieldWidth; i++) {
+	//    for (int j = 0; j < fieldHeight; j++) {
 	// but we can be smarter :)
 	// now, as we search, we can reduce the "pixels" we look at by 
 	// using the x y +/- radius.
@@ -314,17 +290,15 @@ void vectorField::addCounterClockwiseCircle(float x, float y, float radius, floa
 	int endx	= MIN(fieldPosX + fieldRadius, fieldWidth);
 	int endy	= MIN(fieldPosY + fieldRadius, fieldHeight);
 	
-	
-    for (int i = startx; i < endx; i++){
-        for (int j = starty; j < endy; j++){
+    for (int i = startx; i < endx; i++) {
+        for (int j = starty; j < endy; j++) {
 			
             int pos = j * fieldWidth + i;
-            float distance = (float)sqrt((fieldPosX-i)*(fieldPosX-i) +
-                                         (fieldPosY-j)*(fieldPosY-j));
+            float distance = (float)sqrt((fieldPosX-i)*(fieldPosX-i) + (fieldPosY-j)*(fieldPosY-j));
             
 			if (distance < 0.0001) distance = 0.0001;  // since we divide by distance, do some checking here, devide by 0 is BADDDD
 			
-			if (distance < fieldRadius){
+			if (distance < fieldRadius) {
 				
 				float pct = 1.0f - (distance / fieldRadius);
 				
@@ -338,12 +312,8 @@ void vectorField::addCounterClockwiseCircle(float x, float y, float radius, floa
     }
 }
 
-
 //------------------------------------------------------------------------------------
-void vectorField::addVectorCircle(float x, float y, float vx, float vy, float radius, float strength){
-	
-	
-	
+void vectorField::addVectorCircle(float x, float y, float vx, float vy, float radius, float strength) {
 	// x y and radius are in external dimensions.  Let's put them into internal dimensions:
 	// first convert to pct:
 	
@@ -357,8 +327,8 @@ void vectorField::addVectorCircle(float x, float y, float vx, float vy, float ra
 	float fieldRadius	= (float)(radiusPct * fieldWidth);
 	
 	// we used to do this search through every pixel, ie: 
-	//    for (int i = 0; i < fieldWidth; i++){
-	//    for (int j = 0; j < fieldHeight; j++){
+	//    for (int i = 0; i < fieldWidth; i++) {
+	//    for (int j = 0; j < fieldHeight; j++) {
 	// but we can be smarter :)
 	// now, as we search, we can reduce the "pixels" we look at by 
 	// using the x y +/- radius.
@@ -369,18 +339,15 @@ void vectorField::addVectorCircle(float x, float y, float vx, float vy, float ra
 	int endx	= MIN(fieldPosX + fieldRadius, fieldWidth);
 	int endy	= MIN(fieldPosY + fieldRadius, fieldHeight);
 	
-	
-    for (int i = startx; i < endx; i++){
-        for (int j = starty; j < endy; j++){
+    for (int i = startx; i < endx; i++) {
+        for (int j = starty; j < endy; j++) {
 			
             int pos = j * fieldWidth + i;
-            float distance = (float)sqrt((fieldPosX-i)*(fieldPosX-i) +
-                                         (fieldPosY-j)*(fieldPosY-j));
+            float distance = (float)sqrt((fieldPosX-i)*(fieldPosX-i) + (fieldPosY-j)*(fieldPosY-j));
             
 			if (distance < 0.0001) distance = 0.0001;  // since we divide by distance, do some checking here, devide by 0 is BADDDD
 			
-			if (distance < fieldRadius){
-				
+			if (distance < fieldRadius) {				
 				float pct = 1.0f - (distance / fieldRadius);
                 float strongness = strength * pct;
                 field[pos].x += vx * strongness;   
@@ -390,9 +357,7 @@ void vectorField::addVectorCircle(float x, float y, float vx, float vy, float ra
     }
 }
 
-
-
 //------------------------------------------------------------------------------------
-vectorField::~vectorField(){
-
+vectorField::~vectorField() {
+	//
 }

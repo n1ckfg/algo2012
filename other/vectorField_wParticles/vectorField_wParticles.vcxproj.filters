@@ -1,10 +1,16 @@
 <?xml version="1.0"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
-		<ClCompile Include="src\testApp.cpp">
+		<ClCompile Include="src\ofApp.cpp">
 			<Filter>src</Filter>
 		</ClCompile>
 		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\ofApp.cpp">
 			<Filter>src</Filter>
 		</ClCompile>
 		<ClCompile Include="src\particle.cpp">
@@ -20,7 +26,10 @@
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
-		<ClInclude Include="src\testApp.h">
+		<ClInclude Include="src\ofApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\ofApp.h">
 			<Filter>src</Filter>
 		</ClInclude>
 		<ClInclude Include="src\particle.h">
@@ -29,5 +38,8 @@
 		<ClInclude Include="src\vectorField.h">
 			<Filter>src</Filter>
 		</ClInclude>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="icon.rc" />
 	</ItemGroup>
 </Project>

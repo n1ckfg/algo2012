@@ -1,13 +1,10 @@
-#ifndef VECTORFIELD_H
-#define VECTORFIELD_H
-
+#pragma once
 
 #include "ofMain.h"
 
 class vectorField {
 	
     public:
-	
 		// the internal dimensions of the field:    (ie, 60x40, etc)
         int fieldWidth;
         int fieldHeight;
@@ -37,8 +34,5 @@ class vectorField {
         void addCounterClockwiseCircle(float x, float y, float radius, float strength);
         void addVectorCircle(float x, float y, float vx, float vy, float radius, float strength);
 
-    protected:
-    private:
 };
 
-#endif // VECTORFIELD_H

@@ -1,14 +1,11 @@
 #include "ofApp.h"
 
-
 //--------------------------------------------------------------
-void ofApp::setup(){	
-	
+void ofApp::setup() {	
 	ofSetVerticalSync(true);
 	ofSetFrameRate(60);
-	
-	
-	for (int i = 0; i < 200; i++){
+		
+	for (int i = 0; i < 200; i++) {
 		particle myParticle;
 		myParticle.setInitialCondition(ofRandom(0,ofGetWidth()),ofRandom(0,ofGetHeight()),0,0);
 		particles.push_back(myParticle);
@@ -23,16 +20,14 @@ void ofApp::setup(){
 }
 
 //--------------------------------------------------------------
-void ofApp::update(){
-
+void ofApp::update() {
 	// on every frame 
 	// we reset the forces
 	// add in any forces on the particle
 	// perfom damping and
 	// then update
 	
-	
-	for (int i = 0; i < particles.size(); i++){
+	for (int i = 0; i < particles.size(); i++) {
 		particles[i].resetForce();
 		
 		// get the force from the vector field: 
@@ -43,16 +38,12 @@ void ofApp::update(){
 		particles[i].update();
 	}
 	
-	
 	if (bFade == true) VF.fadeField(0.99f);
-
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
-	
-    
-    if (bSavePdf == true){
+void ofApp::draw() {	
+    if (bSavePdf == true) {
         ofBeginSaveScreenAsPDF("screenshot-"+ofGetTimestampString()+".pdf", false);
         
     }
@@ -63,7 +54,7 @@ void ofApp::draw(){
 	
 	ofSetColor(0,0,0);
 	
-	for (int i = 0; i < particles.size(); i++){
+	for (int i = 0; i < particles.size(); i++) {
 		particles[i].draw();
 	}
 	
@@ -72,9 +63,8 @@ void ofApp::draw(){
 	ofSetColor(255,255,255);
 	ofDrawBitmapString("space to clear\nchange drawing mode 'a'\ntoggle fade 'f'\n'p' to save to pdf", 50, 50);
 	
-	
 	ofSetColor(255,255,130);
-	switch (drawingStyle){
+	switch (drawingStyle) {
 		case 0: ofDrawBitmapString("drawing mode: inward", 50, 120);
 			break;
 		case 1: ofDrawBitmapString("drawing mode: outward", 50, 120);
@@ -84,45 +74,44 @@ void ofApp::draw(){
 		case 3: ofDrawBitmapString("drawing mode: counter-clockwise", 50, 120); 
 			break;
 	}	
-    
-    
-    if( bSavePdf ){
+        
+    if( bSavePdf ) {
 		ofEndSaveScreenAsPDF();
         bSavePdf = false;
 	}	
-    
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed  (int key){ 
-	
-	if (key == ' '){
+void ofApp::keyPressed  (int key) { 	
+	if (key == ' ') {
 		VF.clear();
-	} else if (key == 'a'){
+	} else if (key == 'a') {
 		drawingStyle ++;
 		drawingStyle %= 4;
-	} else if (key == 'f'){
+	} else if (key == 'f') {
 		bFade = !bFade;
 	}
     
-    if (key == 'p'){
+    if (key == 'p') {
         
         bSavePdf = true;
     }
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased  (int key){ 
+void ofApp::keyReleased  (int key) { 
+	//
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
+void ofApp::mouseMoved(int x, int y ) {
+	//
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
+void ofApp::mouseDragged(int x, int y, int button) {
 	if (button == 0) {
-		switch (drawingStyle){
+		switch (drawingStyle) {
 			case 0: VF.addInwardCircle((float)x, (float)y, 200, 0.3f);
 				break;
 			case 1: VF.addOutwardCircle((float)x, (float)y, 100, 0.3f);
@@ -132,21 +121,20 @@ void ofApp::mouseDragged(int x, int y, int button){
 			case 3: VF.addCounterClockwiseCircle((float)x, (float)y, 100, 0.3f);
 				break;
 		}		
-	} else {
-		
+	} else {		
 		particles.erase(particles.begin());
 		particle myParticle;
 		myParticle.setInitialCondition(x,y,0,0);
-		particles.push_back(myParticle);
-		
-		
+		particles.push_back(myParticle);				
 	}
 }
 
 //--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
+void ofApp::mousePressed(int x, int y, int button) {
+	//
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(){
+void ofApp::mouseReleased() {
+	//
 }
