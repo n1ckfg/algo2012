@@ -1,13 +1,11 @@
 #include "rectangle.h"
 
-
 //------------------------------------------------------------------
-rectangle::rectangle(){
-  
+rectangle::rectangle() {
+	//
 }
 
-void rectangle::update(){
-
+void rectangle::update() {
 	pos.x = pos.x + ofRandom(-1,1);
 }
 

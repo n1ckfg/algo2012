@@ -1,4 +1,7 @@
 Updated for oF 0.10.1
 
 ./other
-vectorField_wParticles   WIN
+	vectorField_wParticles    WIN
+
+./week1
+	0_rectangleClass    WIN
